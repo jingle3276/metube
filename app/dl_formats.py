@@ -1,6 +1,8 @@
 import copy
+import logging
 
 AUDIO_FORMATS = ("m4a", "mp3", "opus", "wav", "flac")
+logger = logging.getLogger(__name__)
 
 
 def get_format(format: str, quality: str) -> str:
@@ -66,7 +68,6 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
     """
 
     opts = copy.deepcopy(ytdl_opts)
-
     postprocessors = []
 
     if format in AUDIO_FORMATS:
@@ -77,25 +78,25 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
                 "preferredquality": 0 if quality == "best" else quality,
             }
         )
+        logger.info(f"Audio transcoding options: format={format}, quality={quality}")
         
         # Add voice mono settings for MP3
         if format == "mp3" and quality == "32_mono":
             opts["postprocessor_args"] = {
                 "ffmpeg": ["-ac", "1", "-ar", "22050", "-q:a", "8"]
             }
+            logger.info(f"FFmpeg postprocessor args for MP3 32_mono: {opts['postprocessor_args']}")
             
         # Add voice mono settings for OPUS
         if format == "opus" and quality == "19_mono":
             opts["postprocessor_args"] = {
                 "ffmpeg": [
-                    "-ac", "1",                    # Force mono
                     "-c:a", "libopus",            # Use OPUS codec
-                    "-b:a", "19k",                # Set bitrate to 19kbps
-                    "-application", "voip",        # Optimize for speech
-                    "-frame_duration", "20",       # Standard frame size
-                    "-compression_level", "10"     # Highest quality compression
+                    "-ac", "1",                   # Force mono
+                    "-b:a", "19k"                 # Set bitrate to 19kbps
                 ]
             }
+            logger.info(f"FFmpeg postprocessor args for OPUS 19_mono: {opts['postprocessor_args']}")
 
         # Audio formats without thumbnail
         if format not in ("wav") and "writethumbnail" not in opts:
