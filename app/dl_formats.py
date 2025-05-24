@@ -88,15 +88,17 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
             logger.info(f"FFmpeg postprocessor args for MP3 32_mono: {opts['postprocessor_args']}")
             
         # Add voice mono settings for OPUS
-        if format == "opus" and quality == "24k_mono":
+        if format == "opus" and quality == "20k_mono":
             opts["postprocessor_args"] = {
                 "ffmpeg": [
                     "-c:a", "libopus",            # Use OPUS codec
                     "-ac", "1",                   # Force mono
-                    "-b:a", "24k"                 # Set bitrate to 19kbps
+                    "-b:a", "20k",               # Set bitrate to 20kbps
+                    "-frame_duration", "60",      # Use 60ms frames for better compression
+                    "-application", "voip"       # Optimize for voice
                 ]
             }
-            logger.info(f"FFmpeg postprocessor args for OPUS 24k_mono: {opts['postprocessor_args']}")
+            logger.info(f"FFmpeg postprocessor args for OPUS 20k_mono: {opts['postprocessor_args']}")
 
         # Audio formats without thumbnail
         if format not in ("wav") and "writethumbnail" not in opts:
