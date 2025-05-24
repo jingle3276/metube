@@ -92,16 +92,42 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
         # https://ffmpeg.org/ffmpeg-codecs.html#Option-Mapping
         # https://wiki.xiph.org/Opus_Recommended_Settings#:~:text=Opus%20uses%20a%2020%20ms,low%20latency%20and%20good%20quality.
         # Application VOIP option will make opus favor speech intelligibility.
-        if format == "opus" and quality == "19_mono":
-            opts["postprocessor_args"] = {
-                "ffmpeg": [
-                    "-c:a", "libopus",            # Use OPUS codec
-                    "-ac", "1",                   # Force mono
-                    "-b:a", "19k",               # Set bitrate to 19kbps
-                    "-application", "voip"       # Optimize for voice
-                ]
-            }
-            logger.info(f"FFmpeg postprocessor args for OPUS 19_mono: {opts['postprocessor_args']}")
+        if format == "opus":
+            if quality == "19_voip":
+                opts["postprocessor_args"] = {
+                    "ffmpeg": [
+                        "-c:a", "libopus",            # Use OPUS codec
+                        "-ac", "1",                   # Force mono
+                        "-b:a", "19k",                # Set bitrate to 19kbps
+                        "-application", "voip"        # Optimize for voice
+                    ]
+                }
+            if quality == "24":
+                opts["postprocessor_args"] = {
+                    "ffmpeg": [
+                        "-c:a", "libopus",            # Use OPUS codec
+                        "-ac", "1",                   # Force mono  
+                        "-b:a", "24k"                 # Set bitrate to 24kbps
+                    ]
+                }
+            if quality == "64":
+                opts["postprocessor_args"] = {
+                    "ffmpeg": [
+                        "-c:a", "libopus",
+                        "-b:a", "64k",
+                        "-application", "audio"
+                    ]
+                }
+            if quality == "96":
+                opts["postprocessor_args"] = {
+                    "ffmpeg": [
+                        "-c:a", "libopus",
+                        "-b:a", "96k",
+                        "-application", "audio"
+                    ]
+                }
+
+            logger.info(f"FFmpeg postprocessor args for OPUS: {opts['postprocessor_args']}")
 
         # Audio formats without thumbnail
         if format not in ("wav") and "writethumbnail" not in opts:
