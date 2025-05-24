@@ -88,15 +88,21 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
             logger.info(f"FFmpeg postprocessor args for MP3 32_mono: {opts['postprocessor_args']}")
             
         # Add voice mono settings for OPUS
-        if format == "opus" and quality == "19_mono":
+        # https://www.opus-codec.org/docs/opus_api-1.2/group__opus__encoder.html
+        # https://ffmpeg.org/ffmpeg-codecs.html#Option-Mapping
+        # https://wiki.xiph.org/Opus_Recommended_Settings#:~:text=Opus%20uses%20a%2020%20ms,low%20latency%20and%20good%20quality.
+        # Application VOIP option will make opus favor speech intelligibility.
+        if format == "opus" and quality == "20k_mono":
             opts["postprocessor_args"] = {
                 "ffmpeg": [
                     "-c:a", "libopus",            # Use OPUS codec
                     "-ac", "1",                   # Force mono
-                    "-b:a", "19k"                 # Set bitrate to 19kbps
+                    "-b:a", "20k",               # Set bitrate to 20kbps
+                    "-frame_duration", "60",      # Use 60ms frames for better compression
+                    "-application", "voip"       # Optimize for voice
                 ]
             }
-            logger.info(f"FFmpeg postprocessor args for OPUS 19_mono: {opts['postprocessor_args']}")
+            logger.info(f"FFmpeg postprocessor args for OPUS 20k_mono: {opts['postprocessor_args']}")
 
         # Audio formats without thumbnail
         if format not in ("wav") and "writethumbnail" not in opts:
