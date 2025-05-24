@@ -20,6 +20,7 @@ RUN sed -i 's/\r$//g' docker-entrypoint.sh && \
     apk add --update --virtual .build-deps gcc g++ musl-dev && \
     pip install --no-cache-dir pipenv && \
     pipenv install --system --deploy --clear && \
+    pip install --no-cache-dir mutagen && \
     pip uninstall pipenv -y && \
     apk del .build-deps && \
     rm -rf /var/cache/apk/* && \
