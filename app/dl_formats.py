@@ -88,6 +88,10 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
             logger.info(f"FFmpeg postprocessor args for MP3 32_mono: {opts['postprocessor_args']}")
             
         # Add voice mono settings for OPUS
+        # https://www.opus-codec.org/docs/opus_api-1.2/group__opus__encoder.html
+        # https://ffmpeg.org/ffmpeg-codecs.html#Option-Mapping
+        # https://wiki.xiph.org/Opus_Recommended_Settings#:~:text=Opus%20uses%20a%2020%20ms,low%20latency%20and%20good%20quality.
+        # Application VOIP option will make opus favor speech intelligibility.
         if format == "opus" and quality == "20k_mono":
             opts["postprocessor_args"] = {
                 "ffmpeg": [
