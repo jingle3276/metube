@@ -98,7 +98,6 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
                     "-c:a", "libopus",            # Use OPUS codec
                     "-ac", "1",                   # Force mono
                     "-b:a", "20k",               # Set bitrate to 20kbps
-                    "-frame_duration", "60",      # Use 60ms frames for better compression
                     "-application", "voip"       # Optimize for voice
                 ]
             }
