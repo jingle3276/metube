@@ -106,7 +106,6 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
                 opts["postprocessor_args"] = {
                     "ffmpeg": [
                         "-c:a", "libopus",            # Use OPUS codec
-                        "-ac", "1",                   # Force mono  
                         "-b:a", "24k"                 # Set bitrate to 24kbps
                     ]
                 }
