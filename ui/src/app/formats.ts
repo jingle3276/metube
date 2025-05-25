@@ -63,10 +63,10 @@ export const Formats: Format[] = [
     text: 'OPUS',
     qualities: [
       { id: 'best', text: 'Best' },
-      { id: '96', text: '96 kpbs' },
       { id: '64', text: '64 kpbs' },
+      { id: '48', text: '48 kpbs' },
       { id: '24', text: '24 kpbs' },
-      { id: '19_voip', text: '19 kpbs(voip)' }
+      { id: '16_mono', text: '16 kpbs(mono)' }
     ],
   },
   {
