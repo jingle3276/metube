@@ -109,6 +109,13 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
                         "-b:a", "24k"                 # Set bitrate to 24kbps
                     ]
                 }
+            if quality == "32":
+                opts["postprocessor_args"] = {
+                    "ffmpeg": [
+                        "-c:a", "libopus",            
+                        "-b:a", "32k"                 
+                    ]
+                }
             if quality == "64":
                 opts["postprocessor_args"] = {
                     "ffmpeg": [

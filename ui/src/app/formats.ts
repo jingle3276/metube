@@ -65,6 +65,7 @@ export const Formats: Format[] = [
       { id: 'best', text: 'Best' },
       { id: '64', text: '64 kpbs' },
       { id: '48', text: '48 kpbs' },
+      { id: '32', text: '32 kpbs' },
       { id: '24', text: '24 kpbs' },
       { id: '16_mono', text: '16 kpbs(mono)' }
     ],
