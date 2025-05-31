@@ -93,21 +93,27 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
         # https://wiki.xiph.org/Opus_Recommended_Settings#:~:text=Opus%20uses%20a%2020%20ms,low%20latency%20and%20good%20quality.
         # Application VOIP option will make opus favor speech intelligibility.
         if format == "opus":
-            if quality == "19_voip":
+            if quality == "16_mono":
                 opts["postprocessor_args"] = {
                     "ffmpeg": [
                         "-c:a", "libopus",            # Use OPUS codec
                         "-ac", "1",                   # Force mono
-                        "-b:a", "19k",                # Set bitrate to 19kbps
-                        "-application", "voip"        # Optimize for voice
+                        "-b:a", "16k"                 # Set bitrate to 16kbps
+                        #"-application", "voip"        # Optimize for voice
                     ]
                 }
             if quality == "24":
                 opts["postprocessor_args"] = {
                     "ffmpeg": [
                         "-c:a", "libopus",            # Use OPUS codec
-                        "-ac", "1",                   # Force mono  
                         "-b:a", "24k"                 # Set bitrate to 24kbps
+                    ]
+                }
+            if quality == "32":
+                opts["postprocessor_args"] = {
+                    "ffmpeg": [
+                        "-c:a", "libopus",            
+                        "-b:a", "32k"                 
                     ]
                 }
             if quality == "64":
@@ -118,11 +124,11 @@ def get_opts(format: str, quality: str, ytdl_opts: dict) -> dict:
                         "-application", "audio"
                     ]
                 }
-            if quality == "96":
+            if quality == "48":
                 opts["postprocessor_args"] = {
                     "ffmpeg": [
                         "-c:a", "libopus",
-                        "-b:a", "96k",
+                        "-b:a", "48k",
                         "-application", "audio"
                     ]
                 }
